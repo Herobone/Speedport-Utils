@@ -20,6 +20,8 @@ configFile.close()
 host = config.get('host')
 port = config.get('port')
 
+database = config.get('database')
+
 client = InfluxDB('http://' + host + ':' + str(port))
 
 waitTime = config.get('interval')
@@ -47,13 +49,15 @@ def postUpDown():
     while not upSpeedElement.is_displayed():
         pass
 
-    client.write('muelleimer', 'DSLDownRate', fields={'value': int(downSpeedElement.text)})
-    client.write('muelleimer', 'DSLUpRate', fields={'value': int(upSpeedElement.text)})
+    client.write(database, 'DSLDownRate', fields={'value': int(downSpeedElement.text)})
+    client.write(database, 'DSLUpRate', fields={'value': int(upSpeedElement.text)})
     driver.quit()
 
 def main():
     print("Process started!")
     print("Host: ", host)
+    print("Port: ", port)
+    print("Database: ", database)
     print("Geckodriver found: ", os.path.isfile(filePath))
     print("Geckodriver path: ", filePath)
     print("Interval: {} seconds".format(waitTime))
