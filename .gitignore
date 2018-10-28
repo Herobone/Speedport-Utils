@@ -3,3 +3,4 @@ config.json
 *.exe
 *.zip
 *.tar.gz
+*.log
