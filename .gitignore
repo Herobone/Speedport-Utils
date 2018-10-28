@@ -1,0 +1,5 @@
+.vscode/
+config.json
+*.exe
+*.zip
+*.tar.gz

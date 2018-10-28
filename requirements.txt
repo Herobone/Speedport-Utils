@@ -1,0 +1,5 @@
+tqdm
+selenium
+BeautifulSoup4
+requests
+influx-client
