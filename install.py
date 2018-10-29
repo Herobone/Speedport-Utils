@@ -22,7 +22,7 @@ def install():
 
     system = sys.platform.replace("32", "") + platform.architecture()[0].replace("bit", "")
 
-    print("System: ", platform.architecture()[0])
+    print("Arch: ", platform.architecture()[0])
     print("System: ", system)
 
     fileType = sys.platform.replace("win32", "zip").replace("linux", "tar.gz")

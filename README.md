@@ -1,12 +1,18 @@
-# MAI-Robotics Learning App
+# Speedport 3 Smart Utils
 
 1. Installation
-2. Build
-3. Cpoyright and Disclaimer
+2. Usage
+3. Copyright and Disclaimer
 
 ---
 
 ## 1. Installation
+
+### Requirements
+
+- Linux (eg. Ubuntu 18.04) or Windows (can be headless)
+- Firefox
+- Python (minimal Version: 3.6)
 
 1. Download this Project as a zip and extract it or clone it via git
 2. Open a shell in the Folder
@@ -19,11 +25,33 @@ python3 setup.py -I y
 
 ### setup.py Arguments
 
-- *-I*, *--install*: Install the geckodriver
-- *-i*, *--interval*: The interval in which it will push to the database
+- *-I*, *--install*: Install/Reinstall the geckodriver (Default: n)
+- *-i*, *--interval*: Update Interval in seconds to read data and push to the DB (Default: 3600)
+- *-H*, *--host*: Hostname of the InfluxDB server (Default: localhost)
+- *-p*, *--port*: Port of the InfluxDB server (Default: 8086)
+- *-d*, *--database*: Set the default database (Default: iobroker.global)
 
-## 2. Cpoyright and Disclaimer
+## 2. Usage
 
-- You can reuse it in your Hardware or Software projects but you have to credit me!
-- It's not ment to be sold!
-- I am **not** responsible for any damage it may produce
+To run this programm periodically (in the interval you defined at setup), you have to start it as a service (Only Linux). This will start it in the background. Now it will display some debug messages and a process ID (eg. *[1] 72*). To stop it again just write *kill PID* where PID is the given process ID (here 72).
+
+```bash
+python3 postSpeedToDB.py &
+```
+
+## 3. Copyright and Disclaimer
+
+Copyright (C) <2018>  <Herobone>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
