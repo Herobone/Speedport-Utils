@@ -11,7 +11,7 @@ def main():
         help="Port of the InfluxDB server (Default: 8086)")
     ap.add_argument("-i", "--interval", required=False, default=3600,
         help="Update Interval in seconds to read data and push to the DB (Default: 3600)")
-    ap.add_argument("-d", "--database", required=False, default='iobroker.global',
+    ap.add_argument("-d", "--database", required=False, default='iobroker',
         help="Set the default database (Default: 'iobroker.global')")
     ap.add_argument("-I", "--install", required=False, default='n',
         help="Install/Reinstall the geckodriver (Default: 'n')")

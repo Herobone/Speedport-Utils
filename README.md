@@ -18,6 +18,7 @@ For other Router Models (i.e. Telekom Speedport Hybrid), you might also have a l
 - Linux (eg. Ubuntu 18.04) or Windows (can be headless)
 - Firefox
 - Python (minimal Version: 3.6)
+- Pip (using python3)
 
 1. Download this Project as a zip and extract it or clone it via git
 2. Open a shell in the Folder
@@ -34,7 +35,7 @@ python3 setup.py -I y
 - *-i*, *--interval*: Update Interval in seconds to read data and push to the DB (Default: 3600)
 - *-H*, *--host*: Hostname of the InfluxDB server (Default: localhost)
 - *-p*, *--port*: Port of the InfluxDB server (Default: 8086)
-- *-d*, *--database*: Set the default database (Default: iobroker.global)
+- *-d*, *--database*: Set the default database (Default: iobroker)
 
 ## 2. Usage
 
