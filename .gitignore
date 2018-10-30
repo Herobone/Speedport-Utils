@@ -4,4 +4,5 @@ config.json
 *.zip
 *.tar.gz
 *.log
+geckodriver*
 __pycache__/

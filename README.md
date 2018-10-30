@@ -44,7 +44,8 @@ python3 setup.py -I
 - *-v*, *--verboose*: Output debug/information messages
 - *-q*, *--quiet*: No output to the console
 - *-t*, *--type*: Set the type of execution (multi/single)
-- *-a*, *--action*: Set the action it should do (DB/JSON/TXT/LOG)
+- *-a*, *--action*: Set the action it should do (DB/JSON/TXT/CSV/LOG)
+- *-f*, *--format*: Set the format for dump to TXT file. Default: {} {} {} (First {} is Timestamp, Second {} is Up, Third {} is Down)
 
 ### Methods to run
 

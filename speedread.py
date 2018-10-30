@@ -7,6 +7,7 @@ import time
 from influx import InfluxDB
 import json
 import argparse
+import datetime
 
 # Url of the speedport
 # Could also be an ip (192.168.136.1)
@@ -68,13 +69,21 @@ def postVars(up, down):
     client.write(database, 'DSLDownRate', fields={'value': down})
     client.write(database, 'DSLUpRate', fields={'value': up})
 
-def jsonDumpVars(up, down):
+def jsonDumpVars(up, down, fileName = "speeds.json"):
     print("ERROR: Not implemented jet")
 
-def txtDumpVars(up, down):
-    print("ERROR: Not implemented jet")
+def txtDumpVars(up, down, fileName = "speeds.txt", formating = "{} {} {} \n"):
+    dumpFile = open(fileName, "a+")
+    dumpFile.write(formating.format(datetime.datetime.now(), up, down))
+    dumpFile.close()
 
-def processVars(up, down, action="DB", verboose = False):
+def csvDumpVars(up, down, fileName = "speeds.csv"):
+    dumpFile = open(fileName, "a+")
+    dumpFile.write("{};{};{}\n".format(datetime.datetime.now(), up, down))
+    dumpFile.close()
+
+
+def processVars(up, down, action="DB", verboose = False, formatingTXT = None):
     if action.lower() == "DB".lower():
         postVars(up, down)
 
@@ -82,7 +91,13 @@ def processVars(up, down, action="DB", verboose = False):
         jsonDumpVars(up, down)
 
     elif action.lower() == "TXT".lower():
-        txtDumpVars(up, down)
+        if formatingTXT is not None and formatingTXT != "":
+            txtDumpVars(up, down, formating = formatingTXT + "\n")
+        else:
+            txtDumpVars(up, down)
+        
+    elif action.lower() == "CSV".lower():
+        csvDumpVars(up, down)
 
     elif action.lower() == "LOG".lower():
         print("Upload:", up)
@@ -99,6 +114,8 @@ def main():
         help="Set the type of execution (multi/single)")
     ap.add_argument("-a", "--action", required=False, default="DB",
         help="Set the action it should do (DB/JSON/TXT/LOG)")
+    ap.add_argument("-f", "--format", required=False, default="",
+        help="The format in wich the TXT file will be formated")
     ap.add_argument("-q", "--quiet", required=False, help="No output", action='store_true')
     ap.add_argument("-v", "--verboose", required=False, help="Output debug/information messages", action='store_true')
     args = ap.parse_args()
@@ -117,6 +134,13 @@ def main():
 
         elif args.action.lower() == "TXT".lower():
             print("Printing to TXT")
+            if args.format is not None and args.format != "":
+                print("Fomating will be: ", args.format)
+            else:
+                print("Fomating will be: {} {} {}")
+
+        elif args.action.lower() == "CSV".lower():
+            print("Printing to CSV")
 
         elif args.action.lower() == "LOG".lower():
             print("Printing to LOG")
@@ -133,13 +157,13 @@ def main():
     # if the type is multi it will continue processing
     while (args.type == "multi"):
         up, down = readVars(verboose=args.verboose)
-        processVars(up, down, action=args.action, verboose=args.verboose)
+        processVars(up, down, action=args.action, verboose=args.verboose, formatingTXT=args.format)
         time.sleep(waitTime)
     
     # if the type is single it only processes once
     if (args.type == "single"):
         up, down = readVars(verboose=args.verboose)
-        processVars(up, down, action=args.action, verboose=args.verboose)
+        processVars(up, down, action=args.action, verboose=args.verboose, formatingTXT=args.format)
 
 if __name__ == '__main__':
     main()
