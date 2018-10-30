@@ -26,12 +26,12 @@ For other Router Models (i.e. Telekom Speedport Hybrid), you might also have a l
 
 ```bash
 pip3 install -r requirements.txt
-python3 setup.py -I y
+python3 setup.py -I
 ```
 
 ### setup.py Arguments
 
-- *-I*, *--install*: Install/Reinstall the geckodriver (Default: n)
+- *-I*, *--install*: Install/Reinstall the geckodriver
 - *-i*, *--interval*: Update Interval in seconds to read data and push to the DB (Default: 3600)
 - *-H*, *--host*: Hostname of the InfluxDB server (Default: localhost)
 - *-p*, *--port*: Port of the InfluxDB server (Default: 8086)
@@ -39,15 +39,42 @@ python3 setup.py -I y
 
 ## 2. Usage
 
+### Arguments
+
+- *-v*, *--verboose*: Output debug/information messages
+- *-q*, *--quiet*: No output to the console
+- *-t*, *--type*: Set the type of execution (multi/single)
+- *-a*, *--action*: Set the action it should do (DB/JSON/TXT/LOG)
+
+### Methods to run
+
+#### Method 1: Service
+
 To run this programm periodically (in the interval you defined at setup), you have to start it as a service (Only Linux). This will start it in the background. Now it will display some debug messages and a process ID (eg. *[1] 72*). To stop it again just write *kill PID* where PID is the given process ID (here 72).
 
 ```bash
-python3 postSpeedToDB.py &
+python3 speedread.py &
 ```
+
+#### Method 2: Crontab
+
+The other method to get the data regularly is using crontab (Only Linux). To run this every hour you have to add it to your crontab. To do this type
+
+```bash
+crontab -e
+```
+
+Now you should write in the file:
+
+```bash
+59 * * * * /usr/bin/python3 <path to root of speedport utils>/speedread.py -t single -q
+```
+
+This will execute every hour at 59 minutes the command *postSpeedToDB.py -t single -q*. In this case the argument *-q* tells the program to be silent (or *quiet*) and the *-t single* tells the program to make a single measurement
 
 ## 3. Copyright and Disclaimer
 
-Copyright (C) <2018>  <Herobone>
+Copyright (C) 2018 Herobone
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
