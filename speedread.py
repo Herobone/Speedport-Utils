@@ -69,9 +69,6 @@ def postVars(up, down):
     client.write(database, 'DSLDownRate', fields={'value': down})
     client.write(database, 'DSLUpRate', fields={'value': up})
 
-def jsonDumpVars(up, down, fileName = "speeds.json"):
-    print("ERROR: Not implemented jet")
-
 def txtDumpVars(up, down, fileName = "speeds.txt", formating = "{} {} {} \n"):
     dumpFile = open(fileName, "a+")
     dumpFile.write(formating.format(datetime.datetime.now(), up, down))
@@ -87,9 +84,6 @@ def processVars(up, down, action="DB", verboose = False, formatingTXT = None):
     if action.lower() == "DB".lower():
         postVars(up, down)
 
-    elif action.lower() == "JSON".lower():
-        jsonDumpVars(up, down)
-
     elif action.lower() == "TXT".lower():
         if formatingTXT is not None and formatingTXT != "":
             txtDumpVars(up, down, formating = formatingTXT + "\n")
@@ -100,8 +94,8 @@ def processVars(up, down, action="DB", verboose = False, formatingTXT = None):
         csvDumpVars(up, down)
 
     elif action.lower() == "LOG".lower():
-        print("Upload:", up)
-        print("Download:", down)
+        print("up={}".format(up))
+        print("down={}".format(down))
 
     if (verboose):
         print("Download:", down)
@@ -113,7 +107,7 @@ def main():
     ap.add_argument("-t", "--type", required=False, default="multi",
         help="Set the type of execution (multi/single)")
     ap.add_argument("-a", "--action", required=False, default="DB",
-        help="Set the action it should do (DB/JSON/TXT/LOG)")
+        help="Set the action it should do (DB/CSV/TXT/LOG)")
     ap.add_argument("-f", "--format", required=False, default="",
         help="The format in wich the TXT file will be formated")
     ap.add_argument("-q", "--quiet", required=False, help="No output", action='store_true')
@@ -128,9 +122,6 @@ def main():
             print("Host: ", host)
             print("Port: ", port)
             print("Database: ", database)
-
-        elif args.action.lower() == "JSON".lower():
-            print("Printing to JSON")
 
         elif args.action.lower() == "TXT".lower():
             print("Printing to TXT")
