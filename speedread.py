@@ -7,7 +7,6 @@ import time
 from influx import InfluxDB
 import json
 import argparse
-import datetime
 
 # Url of the speedport
 # Could also be an ip (192.168.136.1)
@@ -37,27 +36,41 @@ def readVars(verboose=False):
     options.headless = True
 
     driver = webdriver.Firefox(options=options, executable_path=geckoPath)
+    startTime = time.time()
     driver.get(url)
 
     # go to the status page
     statusMenu = driver.find_element_by_id("navStatus")
     while not statusMenu.is_displayed():
+        time.sleep(1)
+        if time.time() - startTime >= 30:
+            driver.quit()
+            sys.exit(-1)
         pass
     statusMenu.find_element_by_tag_name("a").click()
 
     # get the download speed element
     downSpeedElement = driver.find_element_by_id(id_='var_inet_download')
     while not downSpeedElement.is_displayed():
+        time.sleep(1)
+        if time.time() - startTime >= 30:
+            driver.quit()
+            sys.exit(-1)
         pass
 
     # get the upload speed element
     upSpeedElement = driver.find_element_by_id(id_='var_inet_upload')
     while not upSpeedElement.is_displayed():
+        time.sleep(1)
+        if time.time() - startTime >= 30:
+            driver.quit()
+            sys.exit(-1)
         pass
 
     # Parse the element values to variables
     down = int(downSpeedElement.text)
     up = int(upSpeedElement.text)
+
     driver.quit()
 
     return up, down
