@@ -7,6 +7,7 @@ import time
 from influx import InfluxDB
 import json
 import argparse
+import datetime
 
 # Url of the speedport
 # Could also be an ip (192.168.136.1)
@@ -16,10 +17,12 @@ url = "http://speedport.ip/"
 geckoName = "geckodriver.exe" if sys.platform == "win32" else "geckodriver"
 
 # Get absolut path of geckodriver
-geckoPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), geckoName)
+geckoPath = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), geckoName)
 
 # Get absolut path of config file
-configFile = open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"config.json"), "r")
+configFile = open(os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), "config.json"), "r")
 config = json.load(configFile)  # Load the json config file to a dict
 configFile.close()
 
@@ -30,6 +33,7 @@ database = config.get('database')
 waitTime = config.get('interval')
 
 client = None
+
 
 def readVars(verboose=False):
     options = Options()
@@ -78,6 +82,7 @@ def readVars(verboose=False):
 
         return -1, -1
 
+
 def postVars(up, down):
     if up is -1 or down is -1:
         return
@@ -88,27 +93,29 @@ def postVars(up, down):
     client.write(database, 'DSLDownRate', fields={'value': down})
     client.write(database, 'DSLUpRate', fields={'value': up})
 
-def txtDumpVars(up, down, fileName = "speeds.txt", formating = "{} {} {} \n"):
+
+def txtDumpVars(up, down, fileName="speeds.txt", formating="{} {} {} \n"):
     dumpFile = open(fileName, "a+")
     dumpFile.write(formating.format(datetime.datetime.now(), up, down))
     dumpFile.close()
 
-def csvDumpVars(up, down, fileName = "speeds.csv"):
+
+def csvDumpVars(up, down, fileName="speeds.csv"):
     dumpFile = open(fileName, "a+")
     dumpFile.write("{};{};{}\n".format(datetime.datetime.now(), up, down))
     dumpFile.close()
 
 
-def processVars(up, down, action="DB", verboose = False, formatingTXT = None):
+def processVars(up, down, action="DB", verboose=False, formatingTXT=None):
     if action.lower() == "DB".lower():
         postVars(up, down)
 
     elif action.lower() == "TXT".lower():
         if formatingTXT is not None and formatingTXT != "":
-            txtDumpVars(up, down, formating = formatingTXT + "\n")
+            txtDumpVars(up, down, formating=formatingTXT + "\n")
         else:
             txtDumpVars(up, down)
-        
+
     elif action.lower() == "CSV".lower():
         csvDumpVars(up, down)
 
@@ -120,17 +127,20 @@ def processVars(up, down, action="DB", verboose = False, formatingTXT = None):
         print("Download:", down)
         print("Upload:", up)
 
+
 def main():
 
     ap = argparse.ArgumentParser()
     ap.add_argument("-t", "--type", required=False, default="multi",
-        help="Set the type of execution (multi/single)")
+                    help="Set the type of execution (multi/single)")
     ap.add_argument("-a", "--action", required=False, default="DB",
-        help="Set the action it should do (DB/CSV/TXT/LOG)")
+                    help="Set the action it should do (DB/CSV/TXT/LOG)")
     ap.add_argument("-f", "--format", required=False, default="",
-        help="The format in wich the TXT file will be formated")
-    ap.add_argument("-q", "--quiet", required=False, help="No output", action='store_true')
-    ap.add_argument("-v", "--verboose", required=False, help="Output debug/information messages", action='store_true')
+                    help="The format in wich the TXT file will be formated")
+    ap.add_argument("-q", "--quiet", required=False,
+                    help="No output", action='store_true')
+    ap.add_argument("-v", "--verboose", required=False,
+                    help="Output debug/information messages", action='store_true')
     args = ap.parse_args()
 
     # Print Debug messages if program is not quiet
@@ -167,13 +177,16 @@ def main():
     # if the type is multi it will continue processing
     while (args.type == "multi"):
         up, down = readVars(verboose=args.verboose)
-        processVars(up, down, action=args.action, verboose=args.verboose, formatingTXT=args.format)
+        processVars(up, down, action=args.action,
+                    verboose=args.verboose, formatingTXT=args.format)
         time.sleep(waitTime)
-    
+
     # if the type is single it only processes once
     if (args.type == "single"):
         up, down = readVars(verboose=args.verboose)
-        processVars(up, down, action=args.action, verboose=args.verboose, formatingTXT=args.format)
+        processVars(up, down, action=args.action,
+                    verboose=args.verboose, formatingTXT=args.format)
+
 
 if __name__ == '__main__':
     main()
