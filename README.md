@@ -2,6 +2,8 @@
 
 It's a little straight forward tool to gather statistics from the info page of a _Telekom Speedport Smart 3_ Router. to circumvent any complicated login and decoding mechanisms, it just uses a headless firefox, parses the output of http://speedport.ip/html/login/status.html and sends it to an InfluxDB. It doesn't make use of the *secret* engineering page http://speedport.ip/engineer/html/version.html
 
+You can find more information about this tool on my **[website](https://herobone.de/project/speedport-3-smart-utils/)**
+
 The tool was tested on Linux and Windows, the latter might need you to install some additional SW to run it.
 For other Router Models (i.e. Telekom Speedport Hybrid), you might also have a look at https://github.com/melle/l33tport
 
