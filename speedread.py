@@ -40,6 +40,7 @@ def readVars(verboose=False):
     options.headless = True
 
     driver = webdriver.Firefox(options=options, executable_path=geckoPath)
+    startTime = time.time()
     try:
         driver.get(url)
 
