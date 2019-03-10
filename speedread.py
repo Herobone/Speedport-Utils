@@ -77,9 +77,10 @@ def readVars(verboose=False):
         driver.quit()
 
         return up, down
-    except:
+    except Exception as ex:
         driver.quit()
-
+        if verboose:
+            print(ex)
         return -1, -1
 
 
