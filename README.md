@@ -1,3 +1,5 @@
+⚠️ Abandonment notice ⚠️ I'm no longer maintaining this project, since we switched to an OPNSense Firewall
+
 # Speedport 3 Smart Utils
 
 It's a little straight forward tool to gather statistics from the info page of a _Telekom Speedport Smart 3_ Router. to circumvent any complicated login and decoding mechanisms, it just uses a headless firefox, parses the output of http://speedport.ip/html/login/status.html and sends it to an InfluxDB. It doesn't make use of the *secret* engineering page http://speedport.ip/engineer/html/version.html
